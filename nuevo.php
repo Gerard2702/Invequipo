@@ -30,6 +30,10 @@ $num5 = mysqli_num_rows($resp5);
 $query6="SELECT * FROM estado_equipo order by nombre";
 $resp6= $conn->query($query6);
 $num6 = mysqli_num_rows($resp6);
+
+$query7="SELECT * FROM nivel order by nombre";
+$resp7= $conn->query($query7);
+$num7 = mysqli_num_rows($resp7);
 ?>
 
 <!DOCTYPE html>
@@ -50,9 +54,15 @@ $num6 = mysqli_num_rows($resp6);
     <link href="public/css/animate.css" rel="stylesheet">
     <link href="public/css/style.css" rel="stylesheet">
     
+   <!-- Toastr style -->
+    <link href="public/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+  
+   
+    
 </head>
 
-<body>
+<body id="inicio">
     <div id="wrapper">
        
         <div id="" class="gray-bg dashbard-1">
@@ -81,6 +91,10 @@ $num6 = mysqli_num_rows($resp6);
                 <h3>Agregar nuevo Elemento</h3>
             </div>
             <div class="ibox-content">
+            <div class="alert alert-success alert-dismissable custom-alert" style="display: none">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                <strong>Registro Exitoso.</strong> El registro se ha guardado exitosamente.
+            </div>
             <form class="form-horizontal" name="nuevo" id="nuevo">
                <div class="form-group">
                     <div class="col-lg-offset-2 col-lg-10">
@@ -99,6 +113,20 @@ $num6 = mysqli_num_rows($resp6);
                     </div>
                     <div class="col-md-5">
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1"><i class="fa fa-plus"></i></button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Nivel</label>
+                    <div class="col-md-5">
+                        <select class="select2_demo_1 form-control" name="snivel" id="snivel">
+                            <?php if($num7 >0){ 
+                                while($nivel = mysqli_fetch_array($resp7,MYSQLI_ASSOC)){?>
+                                <option value="<?php echo $nivel['nombre'];?>"><?php echo $nivel['nombre'];?></option>
+                            <?php }} ?>
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal7"><i class="fa fa-plus"></i></button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -222,7 +250,7 @@ $num6 = mysqli_num_rows($resp6);
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label">Otros Software(Utilitarios)</label>
-                    <div class="col-lg-5"><textarea rows="4" type="text" placeholder="Agregar un sistema por linea." class="form-control" name="otrossoftware" id="otrossoftware" ></textarea></div>
+                    <div class="col-lg-5"><textarea rows="4" type="text" placeholder="Agregar un software por linea." class="form-control" name="otrossoftware" id="otrossoftware" ></textarea></div>
                 </div>
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
@@ -452,6 +480,30 @@ $num6 = mysqli_num_rows($resp6);
             </div>
         </div>
     </div>
+    <div class="modal inmodal" id="myModal7" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated fadeIn">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>                                     
+                    <h6 class="modal-title">Agregar Nivel</h6>
+                </div>
+                <form class="form-horizontal" id="fnivel">
+                <div class="modal-body">
+                    
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Nivel</label>
+                            <div class="col-md-8"><input type="text" placeholder="Nivel" class="form-control" name="lnivel" id="lnivel" required></div>
+                        </div> 
+                   
+                </div>
+                <div class="modal-footer">
+                   <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" name="gestado" id="gestado">Guardar</button>
+                </div>
+                 </form>
+            </div>
+        </div>
+    </div>
     <!-- Mainly scripts -->
     <script src="public/js/jquery-2.1.1.js"></script>
     <script src="public/js/bootstrap.min.js"></script>
@@ -463,6 +515,9 @@ $num6 = mysqli_num_rows($resp6);
     <!-- Custom and plugin javascript -->
     <script src="public/js/inspinia.js"></script>
     <script src="public/js/plugins/pace/pace.min.js"></script>
+    
+   <!-- Toastr -->
+    <script src="public/js/plugins/toastr/toastr.min.js"></script>
 
     <script>
         $(document).ready(function() {    
@@ -490,6 +545,30 @@ $num6 = mysqli_num_rows($resp6);
                 }
             }).done(function(data) {
                 $('#myModal1').modal('hide');
+            });
+        
+        });
+        
+         $("#fnivel").submit(function(event){ 
+ 	    event.preventDefault(); 
+	    var name = $("#lnivel").val();
+        var x = document.getElementById("snivel");
+        var option = document.createElement("option");
+        option.text = name;
+        option.name = name;   
+        x.add(option, x[0]);
+        x.selectedIndex = 0;
+        
+            $.ajax({
+                type:"POST",
+                url: "consultas.php",
+                dataType:"text",
+                data:{
+                    funcion:"guardarnivel",
+                    name:name,
+                }
+            }).done(function(data) {
+                $('#myModal7').modal('hide');
             });
         
         });
@@ -620,6 +699,7 @@ $num6 = mysqli_num_rows($resp6);
         var otrossoftwares = $("#otrossoftware").val();
         var observaciones = $("#observaciones").val();
             var tipoequipo = $("#stipoequipo").val();
+            var nivel = $("#nivel").val();
             var ubicacion = $("#ubicacion").val();
             var nombreuser = $("#nombreuser").val();
             var centrocosto = $("#centrocosto").val();
@@ -656,6 +736,7 @@ $num6 = mysqli_num_rows($resp6);
                     otrossoftwares:otrossoftwares,
                     observaciones:observaciones,
                     tipoequipo:tipoequipo,
+                    nivel:nivel,
                     ubicacion:ubicacion,
                     nombreuser:nombreuser,
                     centrocosto:centrocosto,
@@ -683,7 +764,10 @@ $num6 = mysqli_num_rows($resp6);
                     sestado:sestado, 
                 }
             }).done(function(data) {
-                
+                $('body, html').animate({
+			         scrollTop: '0px'
+		          }, 300);
+                $('.custom-alert').fadeIn();
             });
         });
     </script>
