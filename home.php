@@ -90,7 +90,8 @@ $num = mysqli_num_rows($resp);
                 <th>Licencia S.O.</th>
                 <th>Versión de Office</th>
                 <th>Licencia de Office</th>
-                <th>Sistemas Institucionales</th>
+                <th>Sistemas Institucionales</th>                
+                <th>Acciones</th>
                 <th>Otros Software (Utilitarios)</th>
                 <th>Nombre del Equipo</th>
                 <th>Dirección IP</th>
@@ -99,6 +100,7 @@ $num = mysqli_num_rows($resp);
                 <th>Fecha Vencimiento Garantía</th>
                 <th>Estado del Equipo</th>
                 <th>OBSERVACIONES</th>
+                
             </tr>
             </thead>
             <tbody>
@@ -137,6 +139,10 @@ $num = mysqli_num_rows($resp);
                     </ul>
                     </td>
                     <td>
+                    <button class="btn btn-primary btn-circle" type="button" id="modificar" data-toggle="modal" data-target="#myModal1" onClick="modificar('<?php echo $inv['id']; ?>')"><i class="fa fa-edit"></i></button>
+                    <button class="btn btn-primary btn-circle" type="button" id="eliminar" onClick="confirmacion('<?php echo $inv['id']; ?>')"><i class="fa fa-times"></i></button>                    
+                    </td>
+                    <td>
                     <?php 
                       $query2="SELECT * FROM otros_software where id_inventario=".$inv['id'];
                       $resp2= $conn->query($query2);
@@ -148,7 +154,7 @@ $num = mysqli_num_rows($resp);
                                 <li><?php echo $name['nombre'];?></li>
                             <?php }} ?>
                     </ul>
-                    </td>
+                    </td>                    
                     <td><?php echo $inv['nombre_equipo'];?></td>
                     <td><?php echo $inv['direccionip'];?></td>
                     <td><?php echo $inv['nombre_dominio'];?></td>
@@ -177,11 +183,16 @@ $num = mysqli_num_rows($resp);
             </div>
             </div>
             </div>
-        </div>
-        
-        
+        </div>  
     </div>
 
+    <div class="modal inmodal" id="myModal1" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content animated fadeIn" id="modificar-registro">                
+            </div>
+        </div>
+    </div>
+    
     <!-- Mainly scripts -->
     <script src="public/js/jquery-2.1.1.js"></script>
     <script src="public/js/bootstrap.min.js"></script>
@@ -212,7 +223,39 @@ $num = mysqli_num_rows($resp);
         responsive: true,
         } );
 
-        });
+        });        
+    </script>
+    <script type="text/javascript">
+    function confirmacion(x){
+        var conf = confirm("¿Estas Seguro?");
+        if(conf == true){
+            $.ajax({
+                type:"POST",
+                url: "consultas.php",
+                dataType:"text",
+                data:{
+                    funcion:"eliminarregistro",
+                    invenid: x,
+                },
+                success:  function (response) {                    
+                        alert("Registro eliminado exitosamente.");
+                        location.reload(true);                             
+                }
+            })
+        }
+    }
+    function modificar(x){
+            $.ajax({
+                type:"POST",
+                url: "modificar.php",
+                dataType:"text",
+                data:{                    
+                    invenid: x,
+                }
+            }).done(function(data) {
+                $("#modificar-registro").hide().html(data).fadeIn();
+            });
+        }
     </script>
 </body>
 

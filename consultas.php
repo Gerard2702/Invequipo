@@ -59,6 +59,20 @@ if(!isset($_SESSION['usuario']) && !isset($_SESSION['val'])){
              $rs = $conn->insert_delete_update($sql);
              $conn->desconectar();
              break;
+          case 'eliminarregistro':
+              $invenid = $_POST['invenid'];
+              $conn = new Conexion();
+              $conn->conectar();
+              $query = "DELETE FROM sistemas_institucionales WHERE id_inventario=".$invenid;
+              $query2 = "DELETE FROM otros_software WHERE id_inventario=".$invenid;
+              $query3 = "DELETE FROM observaciones WHERE id_inventario=".$invenid;
+              $query4 = "DELETE FROM inventario WHERE id=".$invenid;
+              $rs = $conn->insert_delete_update($query);
+              $rs1 = $conn->insert_delete_update($query2);
+              $rs2 = $conn->insert_delete_update($query3);
+              $rs3 = $conn->insert_delete_update($query4);
+              $conn->desconectar();              
+              break;
           case "guardarinven":
                     $tipoequipo = $_POST['tipoequipo'];
                     $nivel = $_POST['nivel'];
