@@ -73,6 +73,60 @@ if(!isset($_SESSION['usuario']) && !isset($_SESSION['val'])){
               $rs3 = $conn->insert_delete_update($query4);
               $conn->desconectar();              
               break;
+          case "update-registro":
+                    $tipoequipo = $_POST['tipoequipo'];
+                    $nivel = $_POST['nivel'];
+                    $ubicacion = $_POST['ubicacion'];
+                    $nombreuser = $_POST['nombreuser'];
+                    $centrocosto = $_POST['centrocosto'];
+                    $numeroinv = $_POST['numeroinv'];
+                    $smarca = $_POST['smarca'];
+                    $modelo = $_POST['modelo'];
+                    $serie = $_POST['serie'];
+                    $marcamodelo = $_POST['marcamodelo'];
+                    $velocidad = $_POST['velocidad']." ".$_POST['svelocidad'];
+                    $ram = $_POST['ram']." ".$_POST['sram'];
+                    $hdd = $_POST['hdd']." ".$_POST['shdd'];
+                    $sdvd = $_POST['sdvd'];
+                    $sisoperativo = $_POST['sisoperativo'];
+                    $licenciaso = $_POST['licenciaso'];
+                    $versionofice = $_POST['versionofice'];
+                    $licenciaofice = $_POST['licenciaofice'];
+                    $equiponombre = $_POST['equiponombre'];
+                    $sdireccion = $_POST['sdireccion'];
+                    $sdominio = $_POST['sdominio'];
+                    $fechaadqui = $_POST['fechaadqui'];
+                    $fechagarantia = $_POST['fechagarantia'];
+                    $sestado = $_POST['sestado'];  
+                    $idupdated = $_POST['idregistro'],
+              $conn->conectar();
+              $acentos = $conn->query("SET NAMES 'utf8'");
+              if($_POST['sisinstitucionales']!=""){
+               $ref_sisinstitucionales = $_POST['sisinstitucionales'];
+                $ref_sisinstitucionales = preg_split("/\r\n|\r|\n/", $ref_sisinstitucionales);
+             foreach($ref_sisinstitucionales as $valor){
+                $sql = "UPDATE sistemas_institucionales SET nombre='$valor' WHERE id_inventario=".$idupdated;
+                $rs = $conn->insert_delete_update($sql);
+                }  
+             }
+             if($_POST['otrossoftwares']!=""){
+                $ref_otrossoftwares = $_POST['otrossoftwares'];
+                $ref_otrossoftwares = preg_split("/\r\n|\r|\n/", $ref_otrossoftwares);
+             foreach($ref_otrossoftwares as $valor){
+                $sql = "UPDATE otros_software SET nombre='$valor' WHERE id_inventario=".$idupdated;
+                    $rs = $conn->insert_delete_update($sql);
+                }  
+             }
+             if($_POST['observaciones']!=""){
+               $ref_observaciones = $_POST['observaciones'];
+             $ref_observaciones = preg_split("/\r\n|\r|\n/", $ref_observaciones);
+             foreach($ref_observaciones as $valor){
+                $sql = "UPDATE observaciones SET nombre='$valor' WHERE id_inventario=".$idupdated;
+                    $rs = $conn->insert_delete_update($sql);
+                }  
+             }
+              $conn->desconectar();
+            break;
           case "guardarinven":
                     $tipoequipo = $_POST['tipoequipo'];
                     $nivel = $_POST['nivel'];

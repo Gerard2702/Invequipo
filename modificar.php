@@ -17,12 +17,12 @@ if(isset($_POST['invenid'])){
      if($cant >0){ 
         while($datos = mysqli_fetch_array($rs,MYSQLI_ASSOC)){
             $equipe_type = $datos['tipo_equipo'];
-            $nivel = $datos['nivel'];
+            $nivels = $datos['nivel'];
             $ubicacion = $datos['ubicacion'];
             $nombre_usuario = $datos['usuario'];
             $centro_costo = $datos['centro_costo'];
             $num_inventario = $datos['numero_inventario'];
-            $marca = $datos['marca'];
+            $marcas = $datos['marca'];
             $modelo = $datos['modelo'];
             $serie = $datos['serie'];
             $marca_modelo = $datos['marca_modelo'];
@@ -39,7 +39,7 @@ if(isset($_POST['invenid'])){
             $domain = $datos['nombre_dominio'];
             $adquisicion = $datos['fecha_adquisicion'];
             $expira = $datos['fecha_vencimiento'];
-            $estado = $datos['estado_equipo'];
+            $estados = $datos['estado_equipo'];
         }}
     $velocidad_num = (double) substr($veloc_proce, 0, -3);    
     $ram_num = (integer) substr($veloc_proce, 0, -2);
@@ -97,7 +97,7 @@ $conn->desconectar();
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>                                     
                     <h3 class="modal-title">Modificar Registro</h3>
                 </div>
-                <form class="form-horizontal">
+                <form class="form-horizontal" id="updated">
                 <div class="modal-body">                    
                         <div class="form-group" >
                            <div id="wrapper">       
@@ -124,8 +124,9 @@ $conn->desconectar();
                                             <div class="col-md-6">
                                                 <select class="select2_demo_1 form-control" name="stipoequipo" id="stipoequipo">
                                                     <?php if($num >0){ 
-                                                        while($tipo_equipo = mysqli_fetch_array($resp,MYSQLI_ASSOC)){?>                                                      
-                                                        <option value="<?php echo $tipo_equipo['nombre'];?>"><?php echo $tipo_equipo['nombre'];?></option>
+                                                        while($tipo_equipo = mysqli_fetch_array($resp,MYSQLI_ASSOC)){?>   
+                                                        <option value="<?php echo $tipo_equipo['nombre'];?>" <?php echo $tipo_equipo['nombre'] == $equipe_type ? 'selected' : ''?> ><?php echo $tipo_equipo['nombre']; ?></option>
+                                                        
                                                      <?php }} ?>
                                                 </select>
                                             </div>
@@ -136,7 +137,7 @@ $conn->desconectar();
                                                 <select class="select2_demo_1 form-control" name="snivel" id="snivel">
                                                     <?php if($num7 >0){ 
                                                         while($nivel = mysqli_fetch_array($resp7,MYSQLI_ASSOC)){?>
-                                                        <option value="<?php echo $nivel['nombre'];?>"><?php echo $nivel['nombre'];?></option>
+                                                        <option value="<?php echo $nivel['nombre'];?>" <?php echo $nivel['nombre'] == $nivels ? 'selected' : ''?> ><?php echo $nivel['nombre'];?></option>
                                                     <?php }} ?>
                                                 </select>
                                             </div>
@@ -163,7 +164,7 @@ $conn->desconectar();
                                                 <select class="select2_demo_1 form-control" name="smarca" id="smarca">
                                                     <?php if($num2 >0){ 
                                                         while($marca = mysqli_fetch_array($resp2,MYSQLI_ASSOC)){?>
-                                                        <option value="<?php echo $marca['nombre'];?>"><?php echo $marca['nombre'];?></option>
+                                                        <option value="<?php echo $marca['nombre'];?>" <?php echo $marca['nombre'] == $marcas ? 'selected' : ''?> ><?php echo $marca['nombre'];?></option>
                                                     <?php }} ?>
                                                 </select>
                                             </div>
@@ -201,8 +202,8 @@ $conn->desconectar();
                                             <div class="col-md-4"><input type="number" value="<?php echo $ram_num;?>" class="form-control" name="ram" id="ram" ></div>
                                             <div class="col-md-2">
                                                 <select class="form-control" name="sram" id="sram">
-                                                    <option value="GB">GB</option>
-                                                     <option value="MB">MB</option>
+                                                    <option value="GB" <?php echo $tipo_ram == 'GB' ? 'selected' : ''?> >GB</option>
+                                                    <option value="MB" <?php echo $tipo_ram == 'MB' ? 'selected' : ''?> >MB</option>
                                                 </select>
                                             </div>
                                         </div> 
@@ -211,9 +212,9 @@ $conn->desconectar();
                                             <div class="col-md-4"><input type="number" value="<?php echo $hdd_Cap;?>" class="form-control" name="hdd" id="hdd" ></div>
                                             <div class="col-md-2">
                                                 <select class="form-control" name="shdd" id="shdd">
-                                                    <option value="TB">TB</option>
-                                                     <option value="GB">GB</option>
-                                                     <option value="MB">MB</option>
+                                                    <option value="TB" <?php echo $tipo_hdd == 'TB' ? 'selected' : ''?> >TB</option>
+                                                     <option value="GB" <?php echo $tipo_hdd == 'GB' ? 'selected' : ''?> >GB</option>
+                                                     <option value="MB" <?php echo $tipo_hdd == 'MB' ? 'selected' : ''?> >MB</option>
                                                 </select>
                                             </div>
                                         </div> 
@@ -223,7 +224,7 @@ $conn->desconectar();
                                                 <select class="select2_demo_1 form-control" name="sdvd" id="sdvd">
                                                     <?php if($num3 >0){ 
                                                         while($dvd = mysqli_fetch_array($resp3,MYSQLI_ASSOC)){?>
-                                                        <option value="<?php echo $dvd['nombre'];?>"><?php echo $dvd['nombre'];?></option>
+                                                        <option value="<?php echo $dvd['nombre'];?>" <?php echo $dvd['nombre'] == $lector ? 'selected' : ''?> ><?php echo $dvd['nombre'];?></option>
                                                     <?php }} ?>
                                                 </select>
                                             </div>
@@ -286,7 +287,7 @@ $conn->desconectar();
                                                 <select class="select2_demo_1 form-control" name="sdireccion" id="sdireccion">
                                                     <?php if($num4 >0){ 
                                                         while($direccion = mysqli_fetch_array($resp4,MYSQLI_ASSOC)){?>
-                                                        <option value="<?php echo $direccion['nombre'];?>"><?php echo $direccion['nombre'];?></option>
+                                                        <option value="<?php echo $direccion['nombre'];?>" <?php echo $direccion['nombre'] == $ip ? 'selected' : ''?> ><?php echo $direccion['nombre'];?></option>
                                                     <?php }} ?>
                                                 </select>
                                             </div>
@@ -297,7 +298,7 @@ $conn->desconectar();
                                                 <select class="select2_demo_1 form-control" name="sdominio" id="sdominio">
                                                     <?php if($num5 >0){ 
                                                         while($dominio = mysqli_fetch_array($resp5,MYSQLI_ASSOC)){?>
-                                                        <option value="<?php echo $dominio['nombre'];?>"><?php echo $dominio['nombre'];?></option>
+                                                        <option value="<?php echo $dominio['nombre'];?>" <?php echo $dominio['nombre'] == $domain ? 'selected' : ''?> ><?php echo $dominio['nombre'];?></option>
                                                     <?php }} ?>
                                                 </select>
                                             </div>
@@ -322,7 +323,7 @@ $conn->desconectar();
                                                 <select class="select2_demo_1 form-control" name="sestado" id="sestado">
                                                     <?php if($num6 >0){ 
                                                         while($estado = mysqli_fetch_array($resp6,MYSQLI_ASSOC)){?>
-                                                        <option value="<?php echo $estado['nombre'];?>"><?php echo $estado['nombre'];?></option>
+                                                        <option value="<?php echo $estado['nombre'];?>" <?php echo $estado['nombre'] == $estados ? 'selected' : ''?> ><?php echo $estado['nombre'];?></option>
                                                     <?php }} ?>
                                                 </select>
                                             </div>
@@ -368,5 +369,87 @@ $conn->desconectar();
     <script src="public/js/plugins/toastr/toastr.min.js"></script>
 
     
+    <script>
+        $("#updated").submit(function(event){ 
+
+            var tipoequipo = $("#stipoequipo").val();
+            var nivel = $("#snivel").val();
+            var ubicacion = $("#ubicacion").val();
+            var nombreuser = $("#nombreuser").val();
+            var centrocosto = $("#centrocosto").val();
+            var numeroinv = $("#numeroinv").val();
+            var smarca = $("#smarca").val();
+            var modelo = $("#modelo").val();
+            var serie = $("#serie").val();
+            var marcamodelo = $("#marcamodelo").val();
+            var velocidad = $("#velocidad").val();
+            var svelocidad = $("#svelocidad").val();
+            var ram = $("#ram").val();
+            var sram = $("#sram").val();
+            var hdd = $("#hdd").val();
+            var shdd = $("#shdd").val();
+            var sdvd = $("#sdvd").val();
+            var sisoperativo = $("#sisoperativo").val();
+            var licenciaso = $("#licenciaso").val();
+            var versionofice = $("#versionofice").val();
+            var licenciaofice = $("#licenciaofice").val();
+            var sisinstitucionales = $("#sisinstitucionales").val();
+            var otrossoftwares = $("#otrossoftware").val();
+            var equiponombre = $("#equiponombre").val();
+            var sdireccion = $("#sdireccion").val();
+            var sdominio = $("#sdominio").val();
+            var fechaadqui = $("#fechaadqui").val();
+            var fechagarantia = $("#fechagarantia").val();
+            var sestado = $("#sestado").val();
+            var observaciones = $("#observaciones").val();
+            var idreg = $idinv;
+            
+        $.ajax({
+                type:"POST",
+                url: "consultas.php",
+                dataType:"text",
+                data:{
+                    funcion:"update-registro",                                        
+                    tipoequipo:tipoequipo,
+                    nivel:nivel,
+                    ubicacion:ubicacion,
+                    nombreuser:nombreuser,
+                    centrocosto:centrocosto,
+                    numeroinv:numeroinv,
+                    smarca:smarca,
+                    modelo:modelo,
+                    serie:serie,
+                    marcamodelo:marcamodelo,
+                    velocidad:velocidad,
+                    svelocidad:svelocidad,
+                    ram:ram,
+                    sram:sram,
+                    hdd:hdd,
+                    shdd:shdd,
+                    sdvd:sdvd,
+                    sisoperativo:sisoperativo,
+                    licenciaso:licenciaso,
+                    versionofice:versionofice,
+                    licenciaofice:licenciaofice,
+                    sisinstitucionales:sisinstitucionales,
+                    otrossoftwares:otrossoftwares,
+                    equiponombre:equiponombre,
+                    sdireccion:sdireccion,
+                    sdominio:sdominio,
+                    fechaadqui:fechaadqui,
+                    fechagarantia:fechagarantia,
+                    sestado:sestado,
+                    observaciones:observaciones, 
+                    idupdated:idreg,
+                }
+            }).done(function(data) {
+                $('body, html').animate({
+                     scrollTop: '0px'
+                  }, 300);
+                $('.custom-alert').fadeIn();
+            });
+        });
+    </script>
+
 </body>
 </html>
