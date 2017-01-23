@@ -22,7 +22,7 @@ if(isset($_GET['id'])){
             $nombre_usuario = $datos['usuario'];
             $centro_costo = $datos['centro_costo'];
             $num_inventario = $datos['numero_inventario'];
-            $marcas = $datos['marca'];
+            $marcas = trim($datos['marca']);
             $modelo = $datos['modelo'];
             $serie = $datos['serie'];
             $marca_modelo = $datos['marca_modelo'];
@@ -143,10 +143,6 @@ $conn->desconectar();
                                         <h3>Modificar Registro <?php echo $num_inventario ?></h3>   
                                     </div>
                                     <div class="ibox-content">
-                                    <div class="alert alert-success alert-dismissable custom-alert" style="display: none">
-                                                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                                        <strong>Registro Exitoso.</strong> El registro se ha modificado exitosamente.
-                                    </div>
                                     <form class="form-horizontal" name="updated" id="updated" method="POST">
                                        <div class="form-group">
                                             <div class="col-lg-offset-2 col-lg-10">
@@ -288,22 +284,13 @@ $conn->desconectar();
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Sistemas Institucionales</label>
                                             <div class="col-lg-5">
-                                            <textarea rows="4" type="text" class="form-control" name="sisinstitucionales" id="sisinstitucionales" >
-                                                <?php if($cant3 >0){ 
-                                                        while($insti = mysqli_fetch_array($rs3,MYSQLI_ASSOC)){?>
-                                                        <?php echo $insti['nombre'];?>
-                                                    <?php }} ?>
-                                            </textarea>
+                                            <textarea rows="4" type="text" class="form-control" name="observaciones" id="observaciones"><?php if($cant3>0){while($insti=mysqli_fetch_array($rs3,MYSQLI_ASSOC)){?><?php echo $insti['nombre']."\n";?><?php }}?></textarea>                                            
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Otros Software(Utilitarios)</label>
-                                            <div class="col-lg-5"><textarea rows="4" type="text" class="form-control" name="otrossoftware" id="otrossoftware" >
-                                                <?php if($cant4 >0){ 
-                                                        while($other = mysqli_fetch_array($rs4,MYSQLI_ASSOC)){?>
-                                                        <?php echo $other['nombre'];?>
-                                                    <?php }} ?>
-                                            </textarea></div>
+                                            <div class="col-lg-5"><textarea rows="4" type="text" class="form-control" name="observaciones" id="observaciones"><?php if($cant4>0){while($other=mysqli_fetch_array($rs4,MYSQLI_ASSOC)){?><?php echo $other['nombre']."\n";?><?php }}?></textarea>
+                                            </div>
                                         </div>
                                         <div class="hr-line-dashed"></div>
                                         <div class="form-group">
@@ -364,16 +351,15 @@ $conn->desconectar();
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Observaciones</label>
-                                            <div class="col-lg-5"><textarea rows="4" type="text" class="form-control" name="observaciones" id="observaciones" >
-                                                <?php if($cant2 >0){ 
-                                                        while($observas = mysqli_fetch_array($rs2,MYSQLI_ASSOC)){?>
-                                                        <?php echo $observas['nombre'];?>
-                                                    <?php }} ?>
-                                            </textarea></div>
+                                            <div class="col-lg-5">
+                                            <textarea rows="4" type="text" class="form-control" name="observaciones" id="observaciones"><?php if($cant2>0){while($observas=mysqli_fetch_array($rs2,MYSQLI_ASSOC)){?><?php echo $observas['nombre']."\n";?><?php }}?></textarea>
+                                            </div>
                                         </div>  
                                         <div class="form-group">
-                                        <div class="col-md-offset-2 col-md-10">
-                                            <button class="btn btn-primary" type="submit" >Modificar</button>
+                                        <div class="col-md-offset-2 col-md-10">                                                                                     
+                                            <button data-toggle="button" class="btn btn-outline btn-danger" type="button" onclick="history.back(-1)"><i class="fa fa-reply"></i>&nbsp;Cancelar</button>
+                                            <input type="hidden" name="idreg" id="idreg" value="<?php echo $idinv;?>"></input>
+                                            <button data-toggle="submit" class="btn btn-outline btn-primary" ><i class="fa fa-check"></i>&nbsp;Modificar</button>
                                         </div>
                                     </div>   
                                     </form>
@@ -404,8 +390,8 @@ $conn->desconectar();
 
     
     <script>
-    $(document).ready(function () {
-        /*$("#updated").submit(function(event){ 
+    $(document).ready(function () {        });
+        $("#updated").submit(function(){
             event.preventDefault();
             var stipoequipo = $("#stipoequipo").val();
             var snivel = $("#snivel").val();
@@ -437,84 +423,7 @@ $conn->desconectar();
             var sfechagarantia = $("#fechagarantia").val();
             var ssestado = $("#sestado").val();
             var sobservaciones = $("#observaciones").val();
-            var sidreg = $idinv;
-            
-        $.ajax({
-                type:"POST",
-                url: "consultas.php",
-                dataType:"text",
-                data:{
-                    funcion:"update-registro",                                        
-                    tipoequipo:stipoequipo,
-                    nivel:snivel,
-                    ubicacion:subicacion,
-                    nombreuser:snombreuser,
-                    centrocosto:scentrocosto,
-                    numeroinv:snumeroinv,
-                    smarca:ssmarca,
-                    modelo:smodelo,
-                    serie:sserie,
-                    marcamodelo:smarcamodelo,
-                    velocidad:svelocidad,
-                    svelocidad:ssvelocidad,
-                    ram:sram,
-                    sram:ssram,
-                    hdd:shdd,
-                    shdd:sshdd,
-                    sdvd:ssdvd,
-                    sisoperativo:ssisoperativo,
-                    licenciaso:slicenciaso,
-                    versionofice:sversionofice,
-                    licenciaofice:slicenciaofice,
-                    sisinstitucionales:ssisinstitucionales,
-                    otrossoftwares:sotrossoftwares,
-                    equiponombre:sequiponombre,
-                    sdireccion:ssdireccion,
-                    sdominio:ssdominio,
-                    fechaadqui:sfechaadqui,
-                    fechagarantia:sfechagarantia,
-                    sestado:ssestado,
-                    observaciones:sobservaciones, 
-                    idupdated:sidreg,
-                }
-            }).done(function(data) {
-                $('body, html').animate({
-                     scrollTop: '0px'
-                  }, 300);
-                $('.custom-alert').fadeIn();
-            });*/
-        $("#updated").submit(function(){
-            var stipoequipo = $("#stipoequipo").val();
-            var snivel = $("#snivel").val();
-            var subicacion = $("#ubicacion").val();
-            var snombreuser = $("#nombreuser").val();
-            var scentrocosto = $("#centrocosto").val();
-            var snumeroinv = $("#numeroinv").val();
-            var ssmarca = $("#smarca").val();
-            var smodelo = $("#modelo").val();
-            var sserie = $("#serie").val();
-            var smarcamodelo = $("#marcamodelo").val();
-            var svelocidad = $("#velocidad").val();
-            var ssvelocidad = $("#svelocidad").val();
-            var sram = $("#ram").val();
-            var ssram = $("#sram").val();
-            var shdd = $("#hdd").val();
-            var sshdd = $("#shdd").val();
-            var ssdvd = $("#sdvd").val();
-            var ssisoperativo = $("#sisoperativo").val();
-            var slicenciaso = $("#licenciaso").val();
-            var sversionofice = $("#versionofice").val();
-            var slicenciaofice = $("#licenciaofice").val();
-            var ssisinstitucionales = $("#sisinstitucionales").val();
-            var sotrossoftwares = $("#otrossoftware").val();
-            var sequiponombre = $("#equiponombre").val();
-            var ssdireccion = $("#sdireccion").val();
-            var ssdominio = $("#sdominio").val();
-            var sfechaadqui = $("#fechaadqui").val();
-            var sfechagarantia = $("#fechagarantia").val();
-            var ssestado = $("#sestado").val();
-            var sobservaciones = $("#observaciones").val();
-            //var sidreg = $idinv;
+            var sidreg = $("#idreg").val();
             
 
             $.ajax({
@@ -553,17 +462,15 @@ $conn->desconectar();
                     fechagarantia:sfechagarantia,
                     sestado:ssestado,
                     observaciones:sobservaciones, 
-                    //idupdated:sidreg,
-                }
-            }).done(function(data) {
-                $('body, html').animate({
-                     scrollTop: '0px'
-                  }, 300);
-                $('.custom-alert').fadeIn();
-            });                 
-             alert("funca");  
+                    idregistro:sidreg,
+                },
+                success : function() {
+                        alert("Usuario Actualiado Correctamente");                        
+                        window.history.go(-1);
+                        }
+            })                              
         });
-    });
+    
     </script>
 
 </body>
