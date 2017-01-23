@@ -1,15 +1,15 @@
 <?php
 session_start();
+if(!isset($_SESSION['usuario']) && !isset($_SESSION['val'])){
+    header("Location:class/sesion/signout.php");
+}
 include("class/conexion/conexion.php");
 $conn = new Conexion();
 $conn->conectar();
 $acentos = $conn->query("SET NAMES 'utf8'");
 
-if(!isset($_SESSION['usuario']) && !isset($_SESSION['val'])){
-    header("Location:class/sesion/signout.php");
-}
-if(isset($_POST['invenid'])){
-    $idinv = $_POST['invenid'];  
+if(isset($_GET['id'])){
+    $idinv = $_GET['id'];  
     
     $sql = "SELECT * FROM inventario WHERE id=".$idinv;
     $rs = $conn->insert_delete_update($sql);
@@ -90,30 +90,64 @@ $resp7= $conn->query($query7);
 $num7 = mysqli_num_rows($resp7);
 $conn->desconectar();
 ?>
+
 <!DOCTYPE html>
 <html>
-<body >
-    <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>                                     
-                    <h3 class="modal-title">Modificar Registro</h3>
-                </div>
-                <form class="form-horizontal" id="updated">
-                <div class="modal-body">                    
-                        <div class="form-group" >
-                           <div id="wrapper">       
-                                <div class="gray-bg dashbard-1">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Modificar | Update</title>
+
+    <link href="public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="public/font-awesome/css/font-awesome.css" rel="stylesheet">
+    
+    <link href="public/css/animate.css" rel="stylesheet">
+    <link href="public/css/style.css" rel="stylesheet">
+    
+   <!-- Toastr style -->
+    <link href="public/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+  
+   
+    
+</head>
+
+<body id="inicio">
+                            <div id="wrapper">
+                               
+                                <div id="" class="gray-bg dashbard-1">
+                                <div class="row border-bottom">
+                                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                                   <div class="navbar-header">
+                                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="home.php"><i class="fa fa-home"></i></a>
+                                    </div>  
+                                    <ul class="nav navbar-top-links navbar-right">
+                                        <li>
+                                            <span class="m-r-sm text-white welcome-message"><strong>Inventario de Equipo Informatico</strong> </span>
+                                        </li>
+                                        <li>
+                                            <a href="class/sesion/signout.php">
+                                                <i class="fa fa-sign-out"></i> Cerrar sesión
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                </div>
+                                   <br>
                                     <div class="row">
                                     <div class="col-lg-12">
                                     <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h3>Datos del Registro <?php echo $num_inventario ?></h3>
+                                        <h3>Modificar Registro <?php echo $num_inventario ?></h3>   
                                     </div>
                                     <div class="ibox-content">
                                     <div class="alert alert-success alert-dismissable custom-alert" style="display: none">
                                                         <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                                        <strong>Registro Exitoso.</strong> El registro se ha guardado exitosamente.
+                                                        <strong>Registro Exitoso.</strong> El registro se ha modificado exitosamente.
                                     </div>
-                                    <form class="form-horizontal" name="nuevo" id="nuevo">
+                                    <form class="form-horizontal" name="updated" id="updated">
                                        <div class="form-group">
                                             <div class="col-lg-offset-2 col-lg-10">
                                                 <h3>DATOS GENERALES</h3>
@@ -121,7 +155,7 @@ $conn->desconectar();
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Tipo de Equipo</label>
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <select class="select2_demo_1 form-control" name="stipoequipo" id="stipoequipo">
                                                     <?php if($num >0){ 
                                                         while($tipo_equipo = mysqli_fetch_array($resp,MYSQLI_ASSOC)){?>   
@@ -133,7 +167,7 @@ $conn->desconectar();
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Nivel</label>
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <select class="select2_demo_1 form-control" name="snivel" id="snivel">
                                                     <?php if($num7 >0){ 
                                                         while($nivel = mysqli_fetch_array($resp7,MYSQLI_ASSOC)){?>
@@ -144,23 +178,23 @@ $conn->desconectar();
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Ubicacion</label>
-                                            <div class="col-lg-6"><input type="text" value="<?php echo $ubicacion;?>" class="form-control" name="ubicacion" id="ubicacion"></div>
+                                            <div class="col-lg-5"><input type="text" value="<?php echo $ubicacion;?>" class="form-control" name="ubicacion" id="ubicacion"></div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Nombre de Usuario</label>
-                                            <div class="col-lg-6"><input type="text" value="<?php echo $nombre_usuario;?>" class="form-control" name="nombreuser" id="nombreuser" ></div>
+                                            <div class="col-lg-5"><input type="text" value="<?php echo $nombre_usuario;?>" class="form-control" name="nombreuser" id="nombreuser" ></div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Centro de Costo</label>
-                                            <div class="col-lg-6"><input type="number" value="<?php echo $centro_costo;?>" class="form-control" name="centrocosto" id="centrocosto" ></div>
+                                            <div class="col-lg-5"><input type="number" value="<?php echo $centro_costo;?>" class="form-control" name="centrocosto" id="centrocosto" ></div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Numero de Inventario</label>
-                                            <div class="col-lg-6"><input type="text" value="<?php echo $num_inventario;?>" class="form-control" min="0" name="numeroinv" id="numeroinv" ></div>
+                                            <div class="col-lg-5"><input type="text" value="<?php echo $num_inventario;?>" class="form-control" min="0" name="numeroinv" id="numeroinv" ></div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Marca</label>
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <select class="select2_demo_1 form-control" name="smarca" id="smarca">
                                                     <?php if($num2 >0){ 
                                                         while($marca = mysqli_fetch_array($resp2,MYSQLI_ASSOC)){?>
@@ -171,11 +205,11 @@ $conn->desconectar();
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Modelo</label>
-                                           <div class="col-lg-6"><input type="text" value="<?php echo $modelo;?>" class="form-control" name="modelo" id="modelo" ></div>
+                                           <div class="col-lg-5"><input type="text" value="<?php echo $modelo;?>" class="form-control" name="modelo" id="modelo" ></div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Serie</label>
-                                            <div class="col-lg-6"><input type="text" value="<?php echo $serie;?>" class="form-control" name="serie" id="serie" ></div>
+                                            <div class="col-lg-5"><input type="text" value="<?php echo $serie;?>" class="form-control" name="serie" id="serie" ></div>
                                         </div>
                                         <div class="hr-line-dashed"></div>
                                         <div class="form-group">
@@ -186,12 +220,12 @@ $conn->desconectar();
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Marca y Modelo</label>
-                                            <div class="col-lg-6"><input type="text" placeholder="Marca y Modelo" value="<?php echo $marca_modelo;?>" class="form-control" name="marcamodelo" id="marcamodelo" ></div>
+                                            <div class="col-lg-5"><input type="text" placeholder="Marca y Modelo" value="<?php echo $marca_modelo;?>" class="form-control" name="marcamodelo" id="marcamodelo" ></div>
                                         </div> 
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Velocidad</label>
                                             <div class="col-md-4"><input type="number" step='0.01' value="<?php echo $velocidad_num;?>" class="form-control" name="velocidad" id="velocidad" ></div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-1">
                                                 <select class="form-control" name="svelocidad" id="svelocidad" disabled>
                                                     <option value="GHz">GHz</option>
                                                 </select>
@@ -200,7 +234,7 @@ $conn->desconectar();
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">RAM</label>
                                             <div class="col-md-4"><input type="number" value="<?php echo $ram_num;?>" class="form-control" name="ram" id="ram" ></div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-1">
                                                 <select class="form-control" name="sram" id="sram">
                                                     <option value="GB" <?php echo $tipo_ram == 'GB' ? 'selected' : ''?> >GB</option>
                                                     <option value="MB" <?php echo $tipo_ram == 'MB' ? 'selected' : ''?> >MB</option>
@@ -210,7 +244,7 @@ $conn->desconectar();
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">HDD</label>
                                             <div class="col-md-4"><input type="number" value="<?php echo $hdd_Cap;?>" class="form-control" name="hdd" id="hdd" ></div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-1">
                                                 <select class="form-control" name="shdd" id="shdd">
                                                     <option value="TB" <?php echo $tipo_hdd == 'TB' ? 'selected' : ''?> >TB</option>
                                                      <option value="GB" <?php echo $tipo_hdd == 'GB' ? 'selected' : ''?> >GB</option>
@@ -220,7 +254,7 @@ $conn->desconectar();
                                         </div> 
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">CD/DVC</label>
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <select class="select2_demo_1 form-control" name="sdvd" id="sdvd">
                                                     <?php if($num3 >0){ 
                                                         while($dvd = mysqli_fetch_array($resp3,MYSQLI_ASSOC)){?>
@@ -237,23 +271,23 @@ $conn->desconectar();
                                         </div> 
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Sistema Operativo</label>
-                                            <div class="col-lg-6"><input type="text"  value="<?php echo $so;?>" class="form-control" name="sisoperativo" id="sisoperativo" ></div>
+                                            <div class="col-lg-5"><input type="text"  value="<?php echo $so;?>" class="form-control" name="sisoperativo" id="sisoperativo" ></div>
                                         </div> 
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Licencia S.O.</label>
-                                            <div class="col-lg-6"><input type="text"  value="<?php echo $key;?>" class="form-control" name="licenciaso" id="licenciaso" ></div>
+                                            <div class="col-lg-5"><input type="text"  value="<?php echo $key;?>" class="form-control" name="licenciaso" id="licenciaso" ></div>
                                         </div> 
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Version de Office</label>
-                                            <div class="col-lg-6"><input type="text"  value="<?php echo $offi_Version;?>" class="form-control" name="versionofice" id="versionofice" ></div>
+                                            <div class="col-lg-5"><input type="text"  value="<?php echo $offi_Version;?>" class="form-control" name="versionofice" id="versionofice" ></div>
                                         </div> 
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Licencia de Office</label>
-                                            <div class="col-lg-6"><input type="text"  value="<?php echo $office_key;?>" class="form-control" name="licenciaofice" id="licenciaofice" ></div>
+                                            <div class="col-lg-5"><input type="text"  value="<?php echo $office_key;?>" class="form-control" name="licenciaofice" id="licenciaofice" ></div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Sistemas Institucionales</label>
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-5">
                                             <textarea rows="4" type="text" class="form-control" name="sisinstitucionales" id="sisinstitucionales" >
                                                 <?php if($cant3 >0){ 
                                                         while($insti = mysqli_fetch_array($rs3,MYSQLI_ASSOC)){?>
@@ -264,7 +298,7 @@ $conn->desconectar();
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Otros Software(Utilitarios)</label>
-                                            <div class="col-lg-6"><textarea rows="4" type="text" class="form-control" name="otrossoftware" id="otrossoftware" >
+                                            <div class="col-lg-5"><textarea rows="4" type="text" class="form-control" name="otrossoftware" id="otrossoftware" >
                                                 <?php if($cant4 >0){ 
                                                         while($other = mysqli_fetch_array($rs4,MYSQLI_ASSOC)){?>
                                                         <?php echo $other['nombre'];?>
@@ -279,11 +313,11 @@ $conn->desconectar();
                                         </div> 
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Nombre del Equipo</label>
-                                            <div class="col-lg-6"><input type="text" value="<?php echo $nombre_equipo;?>" class="form-control" name="equiponombre" id="equiponombre" ></div>
+                                            <div class="col-lg-5"><input type="text" value="<?php echo $nombre_equipo;?>" class="form-control" name="equiponombre" id="equiponombre" ></div>
                                         </div> 
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Direcci&oacute;n IP</label>
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <select class="select2_demo_1 form-control" name="sdireccion" id="sdireccion">
                                                     <?php if($num4 >0){ 
                                                         while($direccion = mysqli_fetch_array($resp4,MYSQLI_ASSOC)){?>
@@ -294,7 +328,7 @@ $conn->desconectar();
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Nombre del Dominio</label>
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <select class="select2_demo_1 form-control" name="sdominio" id="sdominio">
                                                     <?php if($num5 >0){ 
                                                         while($dominio = mysqli_fetch_array($resp5,MYSQLI_ASSOC)){?>
@@ -311,15 +345,15 @@ $conn->desconectar();
                                         </div>  
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Fecha de Adquisición</label>
-                                            <div class="col-lg-6"><input type="text" value="<?php echo $adquisicion;?>" class="form-control" name="fechaadqui" id="fechaadqui" ></div>
+                                            <div class="col-lg-5"><input type="text" value="<?php echo $adquisicion;?>" class="form-control" name="fechaadqui" id="fechaadqui" ></div>
                                         </div> 
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Fecha de Vencimiento de Garant&iacute;a</label>
-                                            <div class="col-lg-6"><input type="text" value="<?php echo $expira;?>" class="form-control" name="fechagarantia" id="fechagarantia" ></div>
+                                            <div class="col-lg-5"><input type="text" value="<?php echo $expira;?>" class="form-control" name="fechagarantia" id="fechagarantia" ></div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Estado del Equipo</label>
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <select class="select2_demo_1 form-control" name="sestado" id="sestado">
                                                     <?php if($num6 >0){ 
                                                         while($estado = mysqli_fetch_array($resp6,MYSQLI_ASSOC)){?>
@@ -330,13 +364,18 @@ $conn->desconectar();
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Observaciones</label>
-                                            <div class="col-lg-6"><textarea rows="4" type="text" class="form-control" name="observaciones" id="observaciones" >
+                                            <div class="col-lg-5"><textarea rows="4" type="text" class="form-control" name="observaciones" id="observaciones" >
                                                 <?php if($cant2 >0){ 
                                                         while($observas = mysqli_fetch_array($rs2,MYSQLI_ASSOC)){?>
                                                         <?php echo $observas['nombre'];?>
                                                     <?php }} ?>
                                             </textarea></div>
-                                        </div>     
+                                        </div>  
+                                        <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <button class="btn btn-primary" type="submit" >Modificar</button>
+                                        </div>
+                                    </div>   
                                     </form>
                                     </div>
                                     </div>
@@ -346,11 +385,6 @@ $conn->desconectar();
                             </div>
                         </div>                    
                 </div>
-                <div class="modal-footer">
-                   <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" id="savechange">Guardar</button>
-                </div>
-                 </form>
     
     
     <!-- Mainly scripts -->
@@ -370,39 +404,40 @@ $conn->desconectar();
 
     
     <script>
-        $("#updated").submit(function(event){ 
-
-            var tipoequipo = $("#stipoequipo").val();
-            var nivel = $("#snivel").val();
-            var ubicacion = $("#ubicacion").val();
-            var nombreuser = $("#nombreuser").val();
-            var centrocosto = $("#centrocosto").val();
-            var numeroinv = $("#numeroinv").val();
-            var smarca = $("#smarca").val();
-            var modelo = $("#modelo").val();
-            var serie = $("#serie").val();
-            var marcamodelo = $("#marcamodelo").val();
-            var velocidad = $("#velocidad").val();
-            var svelocidad = $("#svelocidad").val();
-            var ram = $("#ram").val();
-            var sram = $("#sram").val();
-            var hdd = $("#hdd").val();
-            var shdd = $("#shdd").val();
-            var sdvd = $("#sdvd").val();
-            var sisoperativo = $("#sisoperativo").val();
-            var licenciaso = $("#licenciaso").val();
-            var versionofice = $("#versionofice").val();
-            var licenciaofice = $("#licenciaofice").val();
-            var sisinstitucionales = $("#sisinstitucionales").val();
-            var otrossoftwares = $("#otrossoftware").val();
-            var equiponombre = $("#equiponombre").val();
-            var sdireccion = $("#sdireccion").val();
-            var sdominio = $("#sdominio").val();
-            var fechaadqui = $("#fechaadqui").val();
-            var fechagarantia = $("#fechagarantia").val();
-            var sestado = $("#sestado").val();
-            var observaciones = $("#observaciones").val();
-            var idreg = $idinv;
+    $(document).ready(function () {
+        /*$("#updated").submit(function(event){ 
+            event.preventDefault();
+            var stipoequipo = $("#stipoequipo").val();
+            var snivel = $("#snivel").val();
+            var subicacion = $("#ubicacion").val();
+            var snombreuser = $("#nombreuser").val();
+            var scentrocosto = $("#centrocosto").val();
+            var snumeroinv = $("#numeroinv").val();
+            var ssmarca = $("#smarca").val();
+            var smodelo = $("#modelo").val();
+            var sserie = $("#serie").val();
+            var smarcamodelo = $("#marcamodelo").val();
+            var svelocidad = $("#velocidad").val();
+            var ssvelocidad = $("#svelocidad").val();
+            var sram = $("#ram").val();
+            var ssram = $("#sram").val();
+            var shdd = $("#hdd").val();
+            var sshdd = $("#shdd").val();
+            var ssdvd = $("#sdvd").val();
+            var ssisoperativo = $("#sisoperativo").val();
+            var slicenciaso = $("#licenciaso").val();
+            var sversionofice = $("#versionofice").val();
+            var slicenciaofice = $("#licenciaofice").val();
+            var ssisinstitucionales = $("#sisinstitucionales").val();
+            var sotrossoftwares = $("#otrossoftware").val();
+            var sequiponombre = $("#equiponombre").val();
+            var ssdireccion = $("#sdireccion").val();
+            var ssdominio = $("#sdominio").val();
+            var sfechaadqui = $("#fechaadqui").val();
+            var sfechagarantia = $("#fechagarantia").val();
+            var ssestado = $("#sestado").val();
+            var sobservaciones = $("#observaciones").val();
+            var sidreg = $idinv;
             
         $.ajax({
                 type:"POST",
@@ -410,45 +445,119 @@ $conn->desconectar();
                 dataType:"text",
                 data:{
                     funcion:"update-registro",                                        
-                    tipoequipo:tipoequipo,
-                    nivel:nivel,
-                    ubicacion:ubicacion,
-                    nombreuser:nombreuser,
-                    centrocosto:centrocosto,
-                    numeroinv:numeroinv,
-                    smarca:smarca,
-                    modelo:modelo,
-                    serie:serie,
-                    marcamodelo:marcamodelo,
-                    velocidad:velocidad,
-                    svelocidad:svelocidad,
-                    ram:ram,
-                    sram:sram,
-                    hdd:hdd,
-                    shdd:shdd,
-                    sdvd:sdvd,
-                    sisoperativo:sisoperativo,
-                    licenciaso:licenciaso,
-                    versionofice:versionofice,
-                    licenciaofice:licenciaofice,
-                    sisinstitucionales:sisinstitucionales,
-                    otrossoftwares:otrossoftwares,
-                    equiponombre:equiponombre,
-                    sdireccion:sdireccion,
-                    sdominio:sdominio,
-                    fechaadqui:fechaadqui,
-                    fechagarantia:fechagarantia,
-                    sestado:sestado,
-                    observaciones:observaciones, 
-                    idupdated:idreg,
+                    tipoequipo:stipoequipo,
+                    nivel:snivel,
+                    ubicacion:subicacion,
+                    nombreuser:snombreuser,
+                    centrocosto:scentrocosto,
+                    numeroinv:snumeroinv,
+                    smarca:ssmarca,
+                    modelo:smodelo,
+                    serie:sserie,
+                    marcamodelo:smarcamodelo,
+                    velocidad:svelocidad,
+                    svelocidad:ssvelocidad,
+                    ram:sram,
+                    sram:ssram,
+                    hdd:shdd,
+                    shdd:sshdd,
+                    sdvd:ssdvd,
+                    sisoperativo:ssisoperativo,
+                    licenciaso:slicenciaso,
+                    versionofice:sversionofice,
+                    licenciaofice:slicenciaofice,
+                    sisinstitucionales:ssisinstitucionales,
+                    otrossoftwares:sotrossoftwares,
+                    equiponombre:sequiponombre,
+                    sdireccion:ssdireccion,
+                    sdominio:ssdominio,
+                    fechaadqui:sfechaadqui,
+                    fechagarantia:sfechagarantia,
+                    sestado:ssestado,
+                    observaciones:sobservaciones, 
+                    idupdated:sidreg,
                 }
             }).done(function(data) {
                 $('body, html').animate({
                      scrollTop: '0px'
                   }, 300);
                 $('.custom-alert').fadeIn();
-            });
+            });*/
+        $("#updated").submit(function(){
+            var stipoequipo = $("#stipoequipo").val();
+            var snivel = $("#snivel").val();
+            var subicacion = $("#ubicacion").val();
+            var snombreuser = $("#nombreuser").val();
+            var scentrocosto = $("#centrocosto").val();
+            var snumeroinv = $("#numeroinv").val();
+            var ssmarca = $("#smarca").val();
+            var smodelo = $("#modelo").val();
+            var sserie = $("#serie").val();
+            var smarcamodelo = $("#marcamodelo").val();
+            var svelocidad = $("#velocidad").val();
+            var ssvelocidad = $("#svelocidad").val();
+            var sram = $("#ram").val();
+            var ssram = $("#sram").val();
+            var shdd = $("#hdd").val();
+            var sshdd = $("#shdd").val();
+            var ssdvd = $("#sdvd").val();
+            var ssisoperativo = $("#sisoperativo").val();
+            var slicenciaso = $("#licenciaso").val();
+            var sversionofice = $("#versionofice").val();
+            var slicenciaofice = $("#licenciaofice").val();
+            var ssisinstitucionales = $("#sisinstitucionales").val();
+            var sotrossoftwares = $("#otrossoftware").val();
+            var sequiponombre = $("#equiponombre").val();
+            var ssdireccion = $("#sdireccion").val();
+            var ssdominio = $("#sdominio").val();
+            var sfechaadqui = $("#fechaadqui").val();
+            var sfechagarantia = $("#fechagarantia").val();
+            var ssestado = $("#sestado").val();
+            var sobservaciones = $("#observaciones").val();
+            var sidreg = $idinv;
+
+            $.ajax({
+                type:"POST",
+                url: "consultas.php",
+                dataType:"text",
+                data:{
+                    funcion:"update-registro",                                        
+                    tipoequipo:stipoequipo,
+                    nivel:snivel,
+                    ubicacion:subicacion,
+                    nombreuser:snombreuser,
+                    centrocosto:scentrocosto,
+                    numeroinv:snumeroinv,
+                    smarca:ssmarca,
+                    modelo:smodelo,
+                    serie:sserie,
+                    marcamodelo:smarcamodelo,
+                    velocidad:svelocidad,
+                    svelocidad:ssvelocidad,
+                    ram:sram,
+                    sram:ssram,
+                    hdd:shdd,
+                    shdd:sshdd,
+                    sdvd:ssdvd,
+                    sisoperativo:ssisoperativo,
+                    licenciaso:slicenciaso,
+                    versionofice:sversionofice,
+                    licenciaofice:slicenciaofice,
+                    sisinstitucionales:ssisinstitucionales,
+                    otrossoftwares:sotrossoftwares,
+                    equiponombre:sequiponombre,
+                    sdireccion:ssdireccion,
+                    sdominio:ssdominio,
+                    fechaadqui:sfechaadqui,
+                    fechagarantia:sfechagarantia,
+                    sestado:ssestado,
+                    observaciones:sobservaciones, 
+                    idupdated:sidreg,
+                }
+            })                 
+               
         });
+    });
     </script>
 
 </body>

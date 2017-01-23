@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if(!isset($_SESSION['usuario']) && !isset($_SESSION['val'])){
 	header("Location:class/sesion/signout.php");
@@ -138,8 +138,8 @@ $num = mysqli_num_rows($resp);
                             <?php }} ?>
                     </ul>
                     </td>
-                    <td>
-                    <button class="btn btn-primary btn-circle" type="button" id="modificar" data-toggle="modal" data-target="#myModal1" onClick="modificar('<?php echo $inv['id']; ?>')"><i class="fa fa-edit"></i></button>
+                    <td>  
+                    <a href="modificar.php?id=<?php echo $inv['id']; ?>" class="btn btn-primary btn-circle"><i class="fa fa-edit"></i></a>                                                                           
                     <button class="btn btn-primary btn-circle" type="button" id="eliminar" onClick="confirmacion('<?php echo $inv['id']; ?>')"><i class="fa fa-times"></i></button>                    
                     </td>
                     <td>
@@ -184,13 +184,6 @@ $num = mysqli_num_rows($resp);
             </div>
             </div>
         </div>  
-    </div>
-
-    <div class="modal inmodal" id="myModal1" tabindex="-1" role="dialog"  aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content animated fadeIn" id="modificar-registro">                
-            </div>
-        </div>
     </div>
     
     <!-- Mainly scripts -->
@@ -244,18 +237,6 @@ $num = mysqli_num_rows($resp);
             })
         }
     }
-    function modificar(x){
-            $.ajax({
-                type:"POST",
-                url: "modificar.php",
-                dataType:"text",
-                data:{                    
-                    invenid: x,
-                }
-            }).done(function(data) {
-                $("#modificar-registro").hide().html(data).fadeIn();
-            });
-        }
     </script>
 </body>
 

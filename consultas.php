@@ -99,32 +99,39 @@ if(!isset($_SESSION['usuario']) && !isset($_SESSION['val'])){
                     $fechagarantia = $_POST['fechagarantia'];
                     $sestado = $_POST['sestado'];  
                     $idupdated = $_POST['idregistro'],
+
               $conn->conectar();
               $acentos = $conn->query("SET NAMES 'utf8'");
+
               if($_POST['sisinstitucionales']!=""){
-               $ref_sisinstitucionales = $_POST['sisinstitucionales'];
+                $ref_sisinstitucionales = $_POST['sisinstitucionales'];
                 $ref_sisinstitucionales = preg_split("/\r\n|\r|\n/", $ref_sisinstitucionales);
-             foreach($ref_sisinstitucionales as $valor){
-                $sql = "UPDATE sistemas_institucionales SET nombre='$valor' WHERE id_inventario=".$idupdated;
-                $rs = $conn->insert_delete_update($sql);
+                foreach($ref_sisinstitucionales as $valor){
+                  $sql1 = "UPDATE sistemas_institucionales SET nombre='$valor' WHERE id_inventario=".$idupdated;
+                  $rs1 = $conn->insert_delete_update($sql1);
                 }  
-             }
-             if($_POST['otrossoftwares']!=""){
+              }
+
+              if($_POST['otrossoftwares']!=""){
                 $ref_otrossoftwares = $_POST['otrossoftwares'];
                 $ref_otrossoftwares = preg_split("/\r\n|\r|\n/", $ref_otrossoftwares);
-             foreach($ref_otrossoftwares as $valor){
-                $sql = "UPDATE otros_software SET nombre='$valor' WHERE id_inventario=".$idupdated;
-                    $rs = $conn->insert_delete_update($sql);
+                foreach($ref_otrossoftwares as $valor){
+                   $sql2 = "UPDATE otros_software SET nombre='$valor' WHERE id_inventario=".$idupdated;
+                    $rs2 = $conn->insert_delete_update($sql2);
                 }  
-             }
-             if($_POST['observaciones']!=""){
-               $ref_observaciones = $_POST['observaciones'];
-             $ref_observaciones = preg_split("/\r\n|\r|\n/", $ref_observaciones);
-             foreach($ref_observaciones as $valor){
-                $sql = "UPDATE observaciones SET nombre='$valor' WHERE id_inventario=".$idupdated;
-                    $rs = $conn->insert_delete_update($sql);
+              }
+              if($_POST['observaciones']!=""){
+                $ref_observaciones = $_POST['observaciones'];
+                $ref_observaciones = preg_split("/\r\n|\r|\n/", $ref_observaciones);
+                foreach($ref_observaciones as $valor){
+                    $sql3 = "UPDATE observaciones SET nombre='$valor' WHERE id_inventario=".$idupdated;
+                    $rs3 = $conn->insert_delete_update($sql3);
                 }  
-             }
+              }
+
+              $sqlup = "UPDATE inventario SET tipo_equipo='$tipoequipo', nivel='$nivel', ubicacion='$ubicacion', usuario='$nombreuser', centro_costo='$centrocosto', numero_inventario='$numeroinv', marca='$smarca', modelo='$modelo', serie='$serie', marca_modelo='$marcamodelo', velocidad='$velocidad', ram='$ram', hdd='$hdd', cd_dvd='$sdvd', sistema_operativo='$sisoperativo', licencia='$licenciaso', 
+                version_office='$versionofice', licencia_office='$licenciaofice', nombre_equipo='$equiponombre', direccionip='$sdireccion', nombre_dominio='$sdominio', fecha_adquisicion='$fechaadqui', fecha_vencimiento='$fechagarantia', estado_equipo='$sestado' WHERE id=".$idupdated;
+              $rsup = $conn->insert_delete_update($sqlup);
               $conn->desconectar();
             break;
           case "guardarinven":
