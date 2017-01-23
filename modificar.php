@@ -147,7 +147,7 @@ $conn->desconectar();
                                                         <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
                                                         <strong>Registro Exitoso.</strong> El registro se ha modificado exitosamente.
                                     </div>
-                                    <form class="form-horizontal" name="updated" id="updated">
+                                    <form class="form-horizontal" name="updated" id="updated" method="POST">
                                        <div class="form-group">
                                             <div class="col-lg-offset-2 col-lg-10">
                                                 <h3>DATOS GENERALES</h3>
@@ -514,7 +514,8 @@ $conn->desconectar();
             var sfechagarantia = $("#fechagarantia").val();
             var ssestado = $("#sestado").val();
             var sobservaciones = $("#observaciones").val();
-            var sidreg = $idinv;
+            //var sidreg = $idinv;
+            
 
             $.ajax({
                 type:"POST",
@@ -552,10 +553,15 @@ $conn->desconectar();
                     fechagarantia:sfechagarantia,
                     sestado:ssestado,
                     observaciones:sobservaciones, 
-                    idupdated:sidreg,
+                    //idupdated:sidreg,
                 }
-            })                 
-               
+            }).done(function(data) {
+                $('body, html').animate({
+                     scrollTop: '0px'
+                  }, 300);
+                $('.custom-alert').fadeIn();
+            });                 
+             alert("funca");  
         });
     });
     </script>
