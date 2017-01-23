@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 if(!isset($_SESSION['usuario']) && !isset($_SESSION['val'])){
 	header("Location:class/sesion/signout.php");
@@ -60,8 +60,8 @@ $num = mysqli_num_rows($resp);
             <div class="ibox-title">
                 <a href="nuevo.php" class="btn btn-primary">Agregar Nuevo</a>
                 <div class="ibox-tools">
-                    <a class="mibtn" href="#"><i class="fa fa-file-pdf-o"></i></a>
-                    <a class="mibtn" href="#"><i class="fa fa-file-excel-o"></i></a>
+                    <a class="mibtn" href="generarpdf.php"><i class="fa fa-file-pdf-o"></i></a>
+                    <a class="mibtn" href="generarexcel.php"><i class="fa fa-file-excel-o"></i></a>
                 </div>
             </div>
             <div class="ibox-content">
