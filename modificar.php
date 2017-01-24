@@ -357,7 +357,7 @@ $conn->desconectar();
                                         </div>  
                                         <div class="form-group">
                                         <div class="col-md-offset-2 col-md-10">                                                                                     
-                                            <button data-toggle="button" class="btn btn-outline btn-danger" type="button" onclick="history.back(-1)"><i class="fa fa-reply"></i>&nbsp;Cancelar</button>
+                                            <a href="home.php"><button  class="btn btn-outline btn-danger" type="button"><i class="fa fa-reply"></i>&nbsp;Cancelar</button></a>
                                             <input type="hidden" name="idreg" id="idreg" value="<?php echo $idinv;?>"></input>
                                             <button data-toggle="submit" class="btn btn-outline btn-primary" ><i class="fa fa-check"></i>&nbsp;Modificar</button>
                                         </div>
@@ -392,7 +392,8 @@ $conn->desconectar();
     <script>
     $(document).ready(function () {        });
         $("#updated").submit(function(){
-            event.preventDefault();
+            
+            
             var stipoequipo = $("#stipoequipo").val();
             var snivel = $("#snivel").val();
             var subicacion = $("#ubicacion").val();
@@ -425,7 +426,7 @@ $conn->desconectar();
             var sobservaciones = $("#observaciones").val();
             var sidreg = $("#idreg").val();
             
-
+           
             $.ajax({
                 type:"POST",
                 url: "consultas.php",
@@ -468,7 +469,8 @@ $conn->desconectar();
                         alert("Usuario Actualiado Correctamente");                        
                         window.history.go(-1);
                         }
-            })                              
+            });
+            alert("funca");                              
         });
     
     </script>
