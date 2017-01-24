@@ -98,7 +98,7 @@ if(!isset($_SESSION['usuario']) && !isset($_SESSION['val'])){
                     $fechaadqui = $_POST['fechaadqui'];
                     $fechagarantia = $_POST['fechagarantia'];
                     $sestado = $_POST['sestado'];  
-                    $idupdated = $_POST['idregistro'],
+                    $idupdated = $_POST['idregistro'];
 
               $conn->conectar();
               $acentos = $conn->query("SET NAMES 'utf8'");
