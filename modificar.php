@@ -284,12 +284,13 @@ $conn->desconectar();
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Sistemas Institucionales</label>
                                             <div class="col-lg-5">
-                                            <textarea rows="4" type="text" class="form-control" name="observaciones" id="observaciones"><?php if($cant3>0){while($insti=mysqli_fetch_array($rs3,MYSQLI_ASSOC)){?><?php echo $insti['nombre']."\n";?><?php }}?></textarea>                                            
+                                            <textarea rows="4" type="text" class="form-control" name="sisinstitucionales" id="sisinstitucionales"><?php if($cant3>0){while($insti=mysqli_fetch_array($rs3,MYSQLI_ASSOC)){?><?php echo $insti['nombre']."\n";?><?php }}?></textarea>                                            
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Otros Software(Utilitarios)</label>
-                                            <div class="col-lg-5"><textarea rows="4" type="text" class="form-control" name="observaciones" id="observaciones"><?php if($cant4>0){while($other=mysqli_fetch_array($rs4,MYSQLI_ASSOC)){?><?php echo $other['nombre']."\n";?><?php }}?></textarea>
+                                            <div class="col-lg-5">
+                                            <textarea rows="4" type="text" class="form-control" name="otrossoftware" id="otrossoftware"><?php if($cant4>0){while($other=mysqli_fetch_array($rs4,MYSQLI_ASSOC)){?><?php echo $other['nombre']."\n";?><?php }}?></textarea>
                                             </div>
                                         </div>
                                         <div class="hr-line-dashed"></div>
