@@ -608,6 +608,7 @@ header('Cache-Control: max-age=0');
  
 //$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+$objWriter->setOffice2003Compatibility(true);
 $objWriter->save('php://output');
 exit;
 
