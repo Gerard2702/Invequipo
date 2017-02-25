@@ -357,6 +357,7 @@ $objPHPExcel->setActiveSheetIndex(0)
 //Se agregan los datos de la base
  
  $i = 6; //Numero de fila donde se va a comenzar a rellenar
+ $j = 1; //Columna de correlativo
  while ($fila = mysqli_fetch_array($resp,MYSQLI_ASSOC)) {
      $tempN2 = "";
      $tempN3 = "";
@@ -368,7 +369,7 @@ $objPHPExcel->setActiveSheetIndex(0)
      
      if($num2 >0){
          while($name = mysqli_fetch_array($resp2,MYSQLI_ASSOC)){
-             $tempN2 = $name['nombre'];
+             $tempN2 = $tempN2 . "\n" . $name['nombre'];
          }
      }
      
@@ -378,7 +379,7 @@ $objPHPExcel->setActiveSheetIndex(0)
      
      if($num3 >0){
          while($name = mysqli_fetch_array($resp3,MYSQLI_ASSOC)){
-             $tempN3 = $name['nombre'];
+             $tempN3 = $tempN3 . "\n" . $name['nombre'];
          }
      }
      
@@ -388,75 +389,13 @@ $objPHPExcel->setActiveSheetIndex(0)
      
      if($num4 >0){
          while($name = mysqli_fetch_array($resp4,MYSQLI_ASSOC)){
-             $tempN4 = $name['nombre'];
+             $tempN4 = $tempN4 . "\n" . $name['nombre'];
          }
      }
      
-     //ESTILO PISOS
-     /*if ($fila['ubicacion'] == 1) {
-         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i,  "Séptimo Nivel - Consulta Externa");
-         $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$i.':Z'.$i);
-         $objPHPExcel->getActiveSheet()->getStyle('A'.$i)->applyFromArray($estiloTituloPiso);
-         $i++;
-     }
-     if ($fila['ubicacion'] == 2) {
-         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i,  "Sexto Nivel - Administrativo");
-         $objPHPExcel->getActiveSheet()->getStyle('A'.$i.':Z'.$i)->applyFromArray($estiloTituloPiso);
-         $i++;
-     }
-     if ($fila['ubicacion'] == 3) {
-         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i,  "Sexto Nivel - Consulta Externa");
-         $objPHPExcel->getActiveSheet()->getStyle('A'.$i.':Z'.$i)->applyFromArray($estiloTituloPiso);
-         $i++;
-     }
-     if ($fila['ubicacion'] == 4) {
-         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i,  "Quinto Nivel - Consulta Externa");
-         $objPHPExcel->getActiveSheet()->getStyle('A'.$i.':Z'.$i)->applyFromArray($estiloTituloPiso);
-         $i++;
-     }
-     if ($fila['ubicacion'] == 5) {
-         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i,  "Quinto Nivel - Rayos X");
-         $objPHPExcel->getActiveSheet()->getStyle('A'.$i.':Z'.$i)->applyFromArray($estiloTituloPiso);
-         $i++;
-     }
-     if ($fila['ubicacion'] == 6) {
-         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i,  "Cuarto Nivel - Consulta Externa");
-         $objPHPExcel->getActiveSheet()->getStyle('A'.$i.':Z'.$i)->applyFromArray($estiloTituloPiso);
-         $i++;
-     }
-     if ($fila['ubicacion'] == 7) {
-         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i,  "Cuarto Nivel - Procedimientos");
-         $objPHPExcel->getActiveSheet()->getStyle('A'.$i.':Z'.$i)->applyFromArray($estiloTituloPiso);
-         $i++;
-     }
-     if ($fila['ubicacion'] == 8) {
-         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i,  "Tercer Nivel - Punto Seguro");
-         $objPHPExcel->getActiveSheet()->getStyle('A'.$i.':Z'.$i)->applyFromArray($estiloTituloPiso);
-         $i++;
-     }
-     if ($fila['ubicacion'] == 9) {
-         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i,  "Tercer Nivel - Farmacia");
-         $objPHPExcel->getActiveSheet()->getStyle('A'.$i.':Z'.$i)->applyFromArray($estiloTituloPiso);
-         $i++;
-     }
-     if ($fila['ubicacion'] == 10) {
-         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i,  "Tercer Nivel - Farmacia");
-         $objPHPExcel->getActiveSheet()->getStyle('A'.$i.':Z'.$i)->applyFromArray($estiloTituloPiso);
-         $i++;
-     }
-     if ($fila['ubicacion'] == 11) {
-         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i,  "Tercer Nivel - Farmacia");
-         $objPHPExcel->getActiveSheet()->getStyle('A'.$i.':Z'.$i)->applyFromArray($estiloTituloPiso);
-         $i++;
-     }
-     if ($fila['ubicacion'] == 12) {
-         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i,  "Tercer Nivel - Farmacia");
-         $objPHPExcel->getActiveSheet()->getStyle('A'.$i.':Z'.$i)->applyFromArray($estiloTituloPiso);
-         $i++;
-     }*/
-     
      $objPHPExcel->setActiveSheetIndex(0)
-         ->setCellValue('A'.$i, $fila['id'])
+         //->setCellValue('A'.$i, $fila['id'])
+         ->setCellValue('A'.$i, $j)
          ->setCellValue('B'.$i, $fila['tipo_equipo'])
          ->setCellValue('C'.$i, $fila['ubicacion'])
          ->setCellValue('D'.$i, $fila['usuario'])
@@ -485,6 +424,7 @@ $objPHPExcel->setActiveSheetIndex(0)
          ->setCellValue('AA'.$i, $tempN4);
              
      $i++;
+     $j++;
  }
 
 // FILTRO
